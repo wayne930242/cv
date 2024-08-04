@@ -1,6 +1,5 @@
-import type { PlinyConfig } from 'pliny/config'
-
-const siteMetadata: PlinyConfig = {
+/** @type {import('pliny/config').PlinyConfig} */
+const siteMetadata = {
   title: 'Wei Hung, a web developer',
   author: 'Wei Hung',
   headerTitle: 'WeiHungBlog',
@@ -99,4 +98,4 @@ const siteMetadata: PlinyConfig = {
   },
 }
 
-export default siteMetadata
+module.exports = siteMetadata
