@@ -7,20 +7,18 @@ interface Project {
 
 const projectsData: Project[] = [
   {
-    title: 'A Search Engine',
-    description: `What if you could look up any information in the world? Webpages, images, videos
-    and more. Google has many features to help you find exactly what you're looking
-    for.`,
-    imgSrc: '/static/images/google.png',
-    href: 'https://www.google.com',
+    title: 'Square One Market',
+    description:
+      'square1market offers US stock market information and analysis. Built with React, it showcases comprehensive front-end technologies through interactive investment games.',
+    imgSrc: '/static/images/square1market.png',
+    href: 'https://www.square1market.com/',
   },
   {
-    title: 'The Time Machine',
-    description: `Imagine being able to travel back in time or to the future. Simple turn the knob
-    to the desired date and press "Go". No more worrying about lost keys or
-    forgotten headphones with this simple yet affordable solution.`,
-    imgSrc: '/static/images/time-machine.jpg',
-    href: '/blog/the-time-machine',
+    title: 'Culture Time',
+    description:
+      'Cultime is the official website of an arts and humanities company, designed by professional web designers. It features an elegant interface and vivid animations. The site is built using WordPress.',
+    imgSrc: '/static/images/cultime.png',
+    href: 'https://cultime.co/',
   },
 ]
 
