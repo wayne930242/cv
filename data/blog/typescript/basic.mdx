@@ -1,0 +1,78 @@
+---
+title: TypeScript 基礎
+date: '2024-08-05'
+tags: ['TypeScript', '基礎']
+draft: true
+layout: PostSimple
+summary: TypeScript 基礎入門
+---
+
+`TypeScript` 是 `JavaScript` 的超集：它是 `JavaScript` 的語法擴充。原則上，所有 `JavaScript` 語法都能在 `TypeScript` 中沿用。但實際上，並非所有的 `JavaScript` 語法都是合法的。它會給予語法額外的嚴格檢查。這些嚴格檢查限制了 `JavaScript` 的自由，來為程式碼提供更高的安全性。
+
+在 `TypeScript` 中，「型別（type）」被加入程式碼空間中。所謂型別，是對對象的標注，標注了對象的結構。一個具有該型別的對象，擁有該型別所擁有的所有屬性與方法。什麼意思呢？
+
+譬如，一個作為 `string`（字串）型別的對象，它應當擁有所有 `string` 的方法和屬性：
+
+```ts
+const str: string = 'Hello, TypeScript!'
+// 注意：這個型別宣告其實是可以省略的
+
+console.log(str.length) // 11
+console.log(str.toUpperCase()) // 'HELLO, TYPESCRIPT!'
+```
+
+這裡有個重要的觀念，對於 `TypeScript` 來說，型別的意義，在於這個對象應該擁有哪些屬性和方法，而不在於它叫做什麼名字。我們可以將屬性和方法桶稱為「結構」，這樣的型別又叫「結構性型別」。
+
+# 原始型別
+
+有些型別是原始的，`TypeScript` 對它們有額外的檢查，常用的包括：
+
+```ts
+// 注意它們都是使用小寫字母
+const str: string = 'Hello, TypeScript!'
+const num: number = 123
+const float: number = 3.14
+const isTrue: boolean = true
+const n: null = null
+const u: undefined = undefined
+```
+
+`TypeScript` 對原始型別的推斷是最直接的。我們實際上可以省略上述的所有型別宣告。當變數宣告時，`TypeScript` 會自動推斷出型別：
+
+```ts
+const str = 'Hello, TypeScript!'
+const num = 123
+const float = 3.14
+const isTrue = true
+const n = null
+const u = undefined
+```
+
+什麼時候我們需要進行宣告呢？通常，這是當該對象的值可能重新指派的時候。在 `TypeScript` 中，當變數的型別被確定，它便會限制對變數值的再賦值。
+
+```ts
+let str = 'Hello, TypeScript!'
+
+str = 'Goodbye, TypeScript!'
+// 這是可以的，你可以將字串指派為另一個字串
+str = 3
+// 這是不行的，你會看到這樣的錯誤，即便這在 JavaScript 中是合法的：
+// TypeError: str is not assignable to type 'string'
+```
+
+如果我們真的希望將字串指派為數字，我們可以使用型別的二元運算子。在下面的例子裡面，我們將 `strOrNum` 的型別宣告為「字串或數字」：
+
+```ts
+let strOrNum: string | number = 'Hello, TypeScript!'
+
+strOrNum = 123
+// 這是可以的
+```
+
+另一個二元運算子是「`&`」。雖然事實上，這兩個型別是不可能共存的，一個變數不可能既是字串，又是數字：
+
+```ts
+let strAndNum: string & number
+```
+
+這時候如何理解 `strAndNum` 的型別呢？`TypeScript` 會說「`Type 'string & number' is never`」，意思是，這會是一個 `never` 的型別。這不是任何可能宣告的型別，一個事物的型別是 `never`，代表該對象不存在。
