@@ -3,8 +3,7 @@ const siteMetadata = {
   title: 'Wei Hung, a web developer',
   author: 'Wei Hung',
   headerTitle: 'WeiHungBlog',
-  description:
-    'Wei Hung is a senior web developer who actively learns new technologies and continuously improves his knowledge.',
+  description: 'Wei Hung: Code. Learn. Evolve.',
   image: 'https://wei.hung.engineer/static/images/twitter-card.jpg',
   language: 'en-us',
   theme: 'system', // system, dark or light
