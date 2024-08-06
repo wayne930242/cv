@@ -252,6 +252,7 @@ const array: string[] = ['Hello', ' TypeScript']
 const array: [string, string] = ['Hello', ' TypeScript']
 
 array.push('World')
+// TypeScript 允許這個操作，但建議不要進行這樣的操作，這會讓靜態型別檢查失效。
 
 const logArray = (arr: [string, string]): void => {
   console.log(arr.join(' '))
@@ -261,7 +262,7 @@ const logArray = (arr: [string, string]): void => {
 logArray(array)
 ```
 
-array 雖然長度變成了 3，但 `TypeScript` 仍然認為它是一個長度是 2 的多元組。這是 `TypeScript` 的寬容，為了確保程式的靈活性，不惜犧牲一部分的安全。
+array 雖然長度變成了 3，但 `TypeScript` 仍然認為它是一個長度是 2 的多元組。
 
 我們可以把 `string[]` 更改為其他的型別，來表示更多的陣列型別：
 
