@@ -5,7 +5,7 @@ const siteMetadata = {
   headerTitle: 'WeiHungBlog',
   description: 'Wei Hung: Code. Learn. Evolve.',
   image: 'https://wei.hung.engineer/static/images/twitter-card.jpg',
-  language: 'en-us',
+  language: 'zh-TW',
   theme: 'system', // system, dark or light
   siteUrl: 'https://wei.hung.engineer',
   siteRepo: 'https://github.com/wayne930242/cv',
