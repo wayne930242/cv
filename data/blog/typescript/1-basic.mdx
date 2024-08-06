@@ -127,7 +127,14 @@ let strAndNum: string & number
 let state: 'idle' | 'loading' | 'loaded' | 'error' = 'idle'
 ```
 
-如果我們有兩個同樣的型別，一個是 `state1`，另一個是 `state2`，我們可以這樣寫：
+如果我們有兩個同樣的型別，一個是 `state1`，另一個是 `state2`，我們想要這樣寫，但看起來有些累贅：
+
+```ts
+let state1: 'idle' | 'loading' | 'loaded' | 'error' = 'idle'
+let state2: 'idle' | 'loading' | 'loaded' | 'error' = 'idle'
+```
+
+`TypeScript` 允許我們宣告型別作為獨立的「變數」，這樣寫看起來好多了：
 
 ```ts
 type State = 'idle' | 'loading' | 'loaded' | 'error'
