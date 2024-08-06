@@ -1,0 +1,280 @@
+---
+title: TypeScript (一)：基礎
+date: '2024-08-05'
+tags: ['TypeScript', '基礎']
+draft: false
+layout: PostSimple
+summary: TypeScript 基礎入門
+---
+
+`TypeScript` 是 `JavaScript` 的超集：它是 `JavaScript` 的語法擴充。
+
+原則上，所有 `JavaScript` 語法都能在 `TypeScript` 中沿用。但實際上，並非所有的 `JavaScript` 語法都是合法的。它會給予語法額外的嚴格檢查。嚴格性限制了 `JavaScript` 的自由，並為程式碼提供更高的安全性。
+
+在 `TypeScript` 中，「型別（type）」被加入程式碼空間中。所謂型別，是對對象的結構的標注與描述。一個具有該型別的對象，擁有該型別所擁有的所有屬性與方法。什麼意思呢？
+
+譬如，一個作為 `string`（字串）型別的對象，它應當擁有所有 `string` 的方法和屬性：
+
+```ts
+let str: string = 'Hello, TypeScript!'
+// str 的型別被標注為 string
+
+console.log(str.length) // 19
+console.log(str.toUpperCase()) // 'HELLO, TYPESCRIPT!'
+```
+
+這裡有個重要的觀念：對於 `TypeScript` 來說，型別的意義，在於這個對象應該擁有哪些屬性和方法，而不在於它叫什麼名字。我們可以將屬性和方法桶稱為「結構」，因此這樣的型別又叫「結構性型別」（或有人會叫它「鴨子型別」）。
+
+如果你想寫 `TypeScript`，你需要調整 `JavaScript` 專案的語言配置。但你可以在 [TypeScript Playground](https://www.typescriptlang.org/play/) 上進行實驗。
+
+# 原始型別
+
+有些型別是原始的，包括（下述並非全部，但是最常用的）：
+
+```ts
+// 注意它們都是使用小寫字母
+let str: string = 'Hello, TypeScript!'
+let num: number = 123
+let float: number = 3.14
+let isTrue: boolean = true
+let n: null = null
+let u: undefined = undefined
+```
+
+當變數宣告時，若使用 `let` 來進行原始型別的變數宣告，`TypeScript` 會自動推斷出型別：
+
+```ts
+let str = 'Hello, TypeScript!'
+// str 的型別是 string
+let num = 123
+// num 的型別是 number
+let float = 3.14
+// float 的型別是 number
+let isTrue = true
+// isTrue 的型別是 boolean
+let n = null
+// n 的型別是 null
+let u = undefined
+// u 的型別是 undefined
+```
+
+但如果使用 `const` 來進行原始型別的變數宣告，它會將它視作常數。在這種時候，`TypeScript` 會將其推斷為字面量類型（literal types）：
+
+```ts
+const str = 'Hello, TypeScript!'
+// str 的型別是 "Hello, TypeScript!"
+const num = 123
+// num 的型別是 123
+const float = 3.14
+// float 的型別是 number
+const isTrue = true
+// isTrue 的型別是 boolean
+const n = null
+// n 的型別是 null
+const u = undefined
+// u 的型別是 undefined
+```
+
+要注意的是，在 `TypeScript` 中，當變數的型別被確定，它便會限制變數的再賦值。這是一個很好的特性，就算你不寫 `TypeScript`，或許也該自主遵守這個規約：
+
+```ts
+let str = 'Hello, TypeScript!'
+
+str = 'Goodbye, TypeScript!'
+// 這是可以的，你可以將字串指派為另一個字串
+str = 3
+// 這是不行的，你會看到這樣的錯誤，即便這在 JavaScript 中是合法的：
+// TypeError: str is not assignable to type 'string'
+```
+
+有一個邏輯上想當然、但重要的特性，那就是字面量類型，即便不使用 `const` 宣告，`TypeScript` 也可能阻止對變量的再賦值：
+
+```ts
+let str: `Hello, TypeScript!` = 'Hello, TypeScript!'
+// 使用字面量類型宣告 str
+
+str = 'Goodbye, TypeScript!'
+// 這是不允許的，你會看到錯誤：
+// Type '"Goodbye, TypeScript!"' is not assignable to type '"Hello, TypeScript!"'.
+```
+
+# 二元運算子與 `never` 型別
+
+如果我們真的希望將字串指派為數字，我們可以使用型別的二元運算子。在下面的例子裡面，我們將 `strOrNum` 的型別宣告為「字串或數字」（這個運算稱作「聯集運算」）：
+
+```ts
+let strOrNum: string | number = 'Hello, TypeScript!'
+
+strOrNum = 123
+// 這是可以的
+```
+
+另一個二元運算子是「`&`」（稱作「交集運算」）。雖然事實上，這兩個型別是不可能共存的，一個變數不可能既是字串，又是數字：
+
+```ts
+let strAndNum: string & number
+```
+
+這時候如何理解 `strAndNum` 的型別呢？`TypeScript` 表示「`Type 'string & number' is never`」，意思是，這會是一個 `never` 的型別。
+
+沒有任何對象能滿足 `never` 型別。因此，若有一個事物的型別是 `never`，代表該對象理論上不該存在。
+
+# `type` 與 `interface`
+
+二元運算子帶來了無數的變化。如果在我們的程式中，多次需要使用某個運算出來的型別，這會是一個麻煩的事情，譬如說，我們希望定義一個稱之為 `state` 的變數，用來記錄程式當前的狀態：
+
+```ts
+let state: 'idle' | 'loading' | 'loaded' | 'error' = 'idle'
+```
+
+如果我們有兩個同樣的型別，一個是 `state1`，另一個是 `state2`，我們可以這樣寫：
+
+```ts
+type State = 'idle' | 'loading' | 'loaded' | 'error'
+
+let state1: State = 'idle'
+let state2: State = 'idle'
+```
+
+`type` 用來宣告型別，宣告出來的 `State` 並非是真正的變數。因此你無法在程式碼中真正使用它。
+
+在心智模式上，你可以把型別當成是獨立於程式的空間，只能用型別的方式表達。
+
+另一種宣告型別的方式是使用 `interface`，但和 `type` 略有不同，它只能用來宣告 `JS` 物件（object）的「形狀」：
+
+```ts
+interface State {
+  type: 'idle' | 'loading' | 'loaded' | 'error'
+}
+// 在一些比較舊的書或是文件裡面，會建議你以 IState 來命名 interface，但這個建議如今已經過時了。
+
+const state: State = {
+  type: 'idle',
+}
+```
+
+事實上，你也能用 `type` 宣告物件的形狀，這基本上和 `interface` 是一樣的：
+
+```ts
+type State = {
+  type: 'idle' | 'loading' | 'loaded' | 'error'
+}
+
+const state: State = {
+  type: 'idle',
+}
+```
+
+這看起來，`type` 和 `interface` 沒什麼差別，但 `type` 的功能更多，因為無法用 `interface` 來宣告原始型別或是原始的字面量型別。這樣我們為何還要使用 `interface`？
+
+`interface` 的優勢在於幾個特性：
+
+(1) 首先，它的性能要比 `type` 好一些，一般來說，建議可以的話先考慮使用 `interface`，只有在必要的時候才使用 `type`。
+
+(2) 此外，它能夠使用 `extends` 來進行擴充（但它不能使用二元運算子）：
+
+```ts
+interface State {
+  type: 'idle' | 'loading' | 'loaded' | 'error'
+}
+
+interface AppState extends State {
+  count: number
+}
+
+const state: AppState = {
+  type: 'idle',
+  count: 0,
+}
+```
+
+如果使用 `type`，可以改用下面這段語法等價語法（`&` 表示將兩個型別的屬性和方法加在一起，這裡可以多想一下把心智模式建立起來）：
+
+```ts
+type State = {
+  type: 'idle' | 'loading' | 'loaded' | 'error'
+}
+
+type AppState = State & {
+  count: number
+}
+
+const state: AppState = {
+  type: 'idle',
+  count: 0,
+}
+```
+
+(3) 最後，`interface` 允許宣告合併（declaration merging）：
+
+```ts
+interface State {
+  type: 'idle' | 'loading' | 'loaded' | 'error'
+}
+
+interface State {
+  count: number
+}
+
+const state: State = {
+  type: 'idle',
+  count: 0,
+}
+```
+
+宣告合併這個特性是 `type` 沒有的，而這個特性廣泛用於第三方模組或是全局類型的擴充上。在這裡可以先記住這個特性，你需要在實作中去看到這特性的好處。
+
+# 陣列
+
+如今我們討論了原始型別以及物件的型別和介面，現在我們來看看陣列。
+
+陣列在 `TypeScript` 中有兩種，即便它們在 `JavaScript` 中毫無區別。一種是多元組（tuple），另一種是真正的陣列（array），差別在於，多元組的長度是固定的，陣列的長度是不定的：
+
+```ts
+const tuple: [string, string] = ['Hello', ' TypeScript']
+
+const wrongTuple: [string, string] = ['Hello', ' TypeScript', ' World']
+// 這會出現錯誤，因為宣告的多元組長度是 2。
+
+const array: string[] = ['Hello', ' TypeScript']
+```
+
+`tuple` 會被 `TypeScript` 認為是一個長度是 2 的多元組，而 `array` 則是一個字串陣列。但事實上，`TypeScript` 並不會頻繁地對陳列進行長度的檢查：
+
+```ts
+const array: [string, string] = ['Hello', ' TypeScript']
+
+array.push('World')
+
+const logArray = (arr: [string, string]): void => {
+  console.log(arr.join(' '))
+}
+// 這是函數的型別宣告，代表它收單一的二元多元組作為參數，並且沒有返回值。
+
+logArray(array)
+```
+
+array 雖然長度變成了 3，但 `TypeScript` 仍然認為它是一個長度是 2 的多元組。這是 `TypeScript` 的寬容，為了確保程式的靈活性，不惜犧牲一部分的安全。
+
+我們可以把 `string[]` 更改為其他的型別，來表示更多的陣列型別：
+
+```ts
+const stringArray: string[] = ['Hello', ' TypeScript', 'World']
+stringArray.push(1)
+// 這會出現錯誤，字串陣列不允許加入數字。
+
+const numberArray: number[] = [1, 2, 3, 4, 5, 6]
+const numberMatrix: number[][] = [
+  [1, 2, 3],
+  [4, 5, 6],
+  [7, 8, 9],
+]
+const stringOrNumberArray: (string | number)[] = ['Hello', ' TypeScript', 1, 2, 3]
+
+type State = 'idle' | 'loading' | 'loaded' | 'error'
+const stateArray: State[] = ['idle', 'idle', 'loading', 'loaded']
+```
+
+# 結語
+
+下一篇文章，我們將介紹泛型和更深入的函數型別的定義。
