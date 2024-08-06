@@ -15,12 +15,12 @@ summary: TypeScript 基礎入門
 
 ```ts
 let str: string = 'Hello, TypeScript!'
-// str 的型別被標注為 string
+// str 的型別被標注為 string。
 
 console.log(str.length) // 19
 console.log(str.toUpperCase()) // 'HELLO, TYPESCRIPT!'
 console.log(str.toFixed(2))
-// 不允許，str 沒有 toFixed 方法
+// 不允許，str 沒有 toFixed 方法。
 ```
 
 這裡有個重要的觀念：對於 `TypeScript` 來說，型別的意義，在於這個對象應該擁有哪些屬性和方法，而不在於它叫什麼名字。我們可以將屬性和方法統稱為「結構」，因此這樣的型別又叫「結構性型別」（或有人會叫它「鴨子型別」）。
@@ -32,7 +32,7 @@ console.log(str.toFixed(2))
 有些型別是原始的，包括（下述並非全部，但是最常用的）：
 
 ```ts
-// 注意它們都是使用小寫字母
+// 注意它們都是使用小寫字母。
 let str: string = 'Hello, TypeScript!'
 let num: number = 123
 let float: number = 3.14
@@ -71,7 +71,7 @@ const isTrue = true
 let str = 'Hello, TypeScript!'
 
 str = 'Goodbye, TypeScript!'
-// 這是可以的，你可以將字串指派為另一個字串
+// 這是可以的，你可以將字串指派為另一個字串。
 str = 3
 // 這是不行的，你會看到這樣的錯誤，即便這在 JavaScript 中是合法的：
 // TypeError: str is not assignable to type 'string'
@@ -81,7 +81,7 @@ str = 3
 
 ```ts
 let str: `Hello, TypeScript!` = 'Hello, TypeScript!'
-// 使用字面量類型宣告 str
+// 使用字面量類型宣告 str。
 
 str = 'Goodbye, TypeScript!'
 // 這是不允許的，你會看到錯誤：
@@ -96,7 +96,7 @@ str = 'Goodbye, TypeScript!'
 let strOrNum: string | number = 'Hello, TypeScript!'
 
 strOrNum = 123
-// 這是可以的
+// 這是可以的。
 ```
 
 另一個二元運算子是「`&`」（稱作「交集運算」）。雖然事實上，這兩個型別是不可能共存的，一個變數不可能既是字串，又是數字：
