@@ -37,8 +37,6 @@ let str: string = 'Hello, TypeScript!'
 let num: number = 123
 let float: number = 3.14
 let isTrue: boolean = true
-let n: null = null
-let u: undefined = undefined
 ```
 
 當變數宣告時，若使用 `let` 來進行原始型別的變數宣告，`TypeScript` 會自動推斷出型別：
@@ -52,10 +50,6 @@ let float = 3.14
 // float 的型別是 number
 let isTrue = true
 // isTrue 的型別是 boolean
-let n = null
-// n 的型別是 null
-let u = undefined
-// u 的型別是 undefined
 ```
 
 但如果使用 `const` 來進行原始型別的變數宣告，它會將它視作常數。在這種時候，`TypeScript` 會將其推斷為字面量類型（literal types）：
@@ -69,10 +63,6 @@ const float = 3.14
 // float 的型別是 number
 const isTrue = true
 // isTrue 的型別是 boolean
-const n = null
-// n 的型別是 null
-const u = undefined
-// u 的型別是 undefined
 ```
 
 要注意的是，在 `TypeScript` 中，當變數的型別被確定，它便會限制變數的再賦值。這是一個很好的特性，就算你不寫 `TypeScript`，或許也該自主遵守這個規約：
