@@ -52,7 +52,7 @@ let isTrue = true
 // isTrue 的型別是 boolean
 ```
 
-但如果使用 `const` 來進行原始型別的變數宣告，它會將它視作常數。在這種時候，`TypeScript` 會將其推斷為字面量類型（literal types）：
+但如果使用 `const` 來進行原始型別的變數宣告，它會將它視作常數。在這種時候，`TypeScript` 會將其推斷為字面量型別（literal types）：
 
 ```ts
 const str = 'Hello, TypeScript!'
@@ -77,11 +77,11 @@ str = 3
 // TypeError: str is not assignable to type 'string'
 ```
 
-有一個邏輯上想當然、但重要的特性，那就是字面量類型，即便不使用 `const` 宣告，`TypeScript` 也可能阻止對變量的再賦值：
+有一個邏輯上想當然、但重要的特性，那就是字面量型別，即便不使用 `const` 宣告，`TypeScript` 也可能阻止對變量的再賦值：
 
 ```ts
 let str: `Hello, TypeScript!` = 'Hello, TypeScript!'
-// 使用字面量類型宣告 str。
+// 使用字面量型別宣告 str。
 
 str = 'Goodbye, TypeScript!'
 // 這是不允許的，你會看到錯誤：
@@ -168,7 +168,7 @@ const state: State = {
 
 (1) 首先，它的性能要比 `type` 好一些，一般來說，建議可以的話先考慮使用 `interface`，只有在必要的時候才使用 `type`。
 
-(2) 此外，它能夠使用 `extends` 來進行擴展（但它不能使用二元運算子來定義宣告）：
+(2) 此外，它能夠使用 `extends` 來定義擴展宣告（但它不能使用二元運算子來定義宣告）：
 
 ```ts
 interface State {
@@ -219,7 +219,7 @@ const state: State = {
 }
 ```
 
-宣告合併這個特性是 `type` 沒有的，而這個特性廣泛用於第三方模組或是全局類型的擴展上。在這裡可以先記住這個特性，你需要在實作中去看到這特性的好處。
+宣告合併這個特性是 `type` 沒有的，而這個特性廣泛用於第三方模組或是全局型別的擴展上。在這裡可以先記住這個特性，你需要在實作中去看到這特性的好處。
 
 # 陣列
 
@@ -236,7 +236,7 @@ const wrongTuple: [string, string] = ['Hello', ' TypeScript', ' World']
 const array: string[] = ['Hello', ' TypeScript']
 ```
 
-`tuple` 會被 `TypeScript` 認為是一個長度是 2 的多元組，而 `array` 則是一個字串陣列。但事實上，`TypeScript` 並不會頻繁地對陳列進行長度的檢查：
+`tuple` 會被 `TypeScript` 認為是一個長度是 2 的多元組，而 `array` 則是一個字串陣列。但事實上，`TypeScript` 並不會頻繁地對陣列進行長度的檢查：
 
 ```ts
 const array: [string, string] = ['Hello', ' TypeScript']
