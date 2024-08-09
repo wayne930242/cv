@@ -104,7 +104,7 @@ function processUserData(data: unknown): { name: string; age: number } {
 }
 ```
 
-注意上面的例子中的註解，`TypeScript` 有能力根據條件來明白，在這個脈絡下的變數是或不是什麼型別，這個關店是型別防衛（type guard）的基礎。未來我們會有更清楚的說明。
+注意上面的例子中的註解，這顯示 `TypeScript` 有能力根據條件來明白，在這個脈絡下的變數是或不是什麼型別，這觀念是型別防衛（type guard）的基礎。未來我們會有更清楚的說明。
 
 `unknown` 和 `any` 最大的差別是，在你為 `unknown` 的變數確定型別以前，`TypeScript` 會禁止你對它進行先入為主的判斷，這使得你的程式碼更加健全。譬如：
 
