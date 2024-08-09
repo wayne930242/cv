@@ -20,7 +20,7 @@ const hello = function (name) {
   return `Hello, ${name}`
 }
 
-// 箭頭函式，更簡潔的寫法，在 ES6 中引入
+// 箭頭函式，更簡潔的函式表達式的寫法，在 ES6 中引入
 const hello = (name) => `Hello, ${name}`
 ```
 
@@ -38,7 +38,7 @@ const hello = function (name: string): string {
 const hello = (name: string): string => `Hello, ${name}`
 ```
 
-除了直接在函式宣告時定義參數和返回值的型別，我們還可以把函式的型別獨立定義，只是這時候始能使用函式表達式或是箭頭函式：
+除了直接在函式宣告時定義參數和返回值的型別，我們還可以把函式的型別獨立定義，只是這時，只能使用函式表達式或是箭頭函式：
 
 ```ts
 type MathFunction = (x: number, y: number) => number
