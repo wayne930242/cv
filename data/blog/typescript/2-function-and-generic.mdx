@@ -1,0 +1,194 @@
+---
+title: TypeScript (二)：函式和泛型基礎
+date: '2024-08-09'
+tags: ['TypeScript', '基礎', 'TypeScript 從入門到精通']
+draft: false
+layout: PostSimple
+summary: 介紹 TypeScript 中的函式型別宣告和泛型的基本概念。
+---
+
+在 `JavaScript` 中，有幾種常見的定義函式的方法，包括函式宣告（Function Declaration）、函式表達式（Function Expression）和箭頭函式（Arrow Function）：
+
+```js
+// 函式宣告，最傳統的函式宣告方式
+function hello(name) {
+  return `Hello, ${name}`
+}
+
+// 函式表達式，將一個匿名函式指派給一個變數
+const hello = function (name) {
+  return `Hello, ${name}`
+}
+
+// 箭頭函式，更簡潔的寫法，在 ES6 中引入
+const hello = (name) => `Hello, ${name}`
+```
+
+使用 `TypeScript`，可以直接定義參數和 `return` 的型別：
+
+```ts
+function hello(name: string): string {
+  return `Hello, ${name}`
+}
+
+const hello = function (name: string): string {
+  return `Hello, ${name}`
+}
+
+const hello = (name: string): string => `Hello, ${name}`
+```
+
+除了直接在函式宣告時定義參數和返回值的型別，我們還可以把函式的型別獨立定義，只是這時候始能使用函式表達式或是箭頭函式：
+
+```ts
+type MathFunction = (x: number, y: number) => number
+
+const add: MathFunction = (x, y) => x + y
+
+// 或使用函式表達式：
+const add: MathFunction = function (x, y) {
+  return x + y
+}
+```
+
+`TypeScript` 會自動判斷出 `return` 的型別，因此我們可以省略 `return` 型別的宣告：
+
+```ts
+function hello(name: string) {
+  return `Hello, ${name}`
+}
+```
+
+如果沒有返回值，除了省略 `return` 型別的宣告外，也可以使用 `void` 型別來明確宣告：
+
+```ts
+function hello(name: string): void {
+  console.log(`Hello, ${name}`)
+}
+```
+
+然而，傳入的參數的型別不該省略，在嚴格模式下，`TypeScript` 會出現錯誤：
+
+```ts
+function hello(name) {
+  return `Hello, ${name}`
+}
+// Parameter 'name' implicitly has an 'any' type.
+```
+
+這個錯誤訊息表示，這裡的 `name` 因為並未指派型別，並且無法從宣告中判斷其型別，因此 `TypeScript` 只好將它當成 `any` 型別，意思是它可能是任何型別，這會使得 `TypeScript` 幾乎對它不會做任何檢查。而在嚴格模式下。「自動判斷為 `any`」是不能被允許的。
+
+如果你真的希望資料的型別是 `any`，你必須明示地宣告它。
+
+# `Any` 與 `Unknown` 型別
+
+但是，有一個需要強調的觀點：盡量不要用 `any` 型別，除非非不得已。
+
+`any` 型別差不多是告訴 `TypeScript`：「你不要管這個變數的型別，我會自己判斷」。`TypeScript` 幾乎不會對 `any` 型別做任何檢查，使得所有的 `TypeScript` 錯誤都被掩蓋起來。
+
+大部分需要使用 `any` 的情境，我們可以使用 `unknown` 型別來做到這件事。在下面的例子中，我們不清楚 `data` 的型別，因此我們將它指派為 `unknown`：
+
+```ts
+function processUserData(data: unknown): { name: string; age: number } {
+  if (typeof data === 'object' && data !== null) {
+    // 到了這一行，TypeScript 知道 data 是一個物件，並且不是 null。
+    if ('name' in data && 'age' in data) {
+      const { name, age } = data as { name: unknown; age: unknown }
+      if (typeof name === 'string' && typeof age === 'number') {
+        // 到了這一行，TypeScript 知道 name 是字串，並且 age 是數字。
+        return { name, age }
+      }
+    }
+  }
+  throw new Error('無效的用戶數據')
+}
+```
+
+注意上面的例子中的註解，`TypeScript` 有能力根據條件來明白，在這個脈絡下的變數是或不是什麼型別，這個關店是型別防衛（type guard）的基礎。未來我們會有更清楚的說明。
+
+`unknown` 和 `any` 最大的差別是，在你為 `unknown` 的變數確定型別以前，`TypeScript` 會禁止你對它進行先入為主的判斷，這使得你的程式碼更加健全。譬如：
+
+```ts
+function processDataUnknown(data: unknown) {
+  console.log(data.length)
+  // 錯誤：'data is of type 'unknown'.'
+  data.toUpperCase()
+  // 錯誤：'data is of type 'unknown'.'
+
+  // 我們必須先為 data 確定型別，也就是對它進行型別防衛。
+  if (typeof data === 'string') {
+    console.log(data.length)
+    console.log(data.toUpperCase())
+  } else if (Array.isArray(data)) {
+    console.log(data.length)
+  } else {
+    console.log('data 不是字串也不是陣列')
+  }
+}
+```
+
+# 簡單的泛型
+
+泛型是 `TypeScript` 中的強大功能，需要靈活應用型別，就必須要學習泛型的使用。
+
+假設我們的需求是這樣，我想定義一個名為 `swap` 的函式，它收一個 2 元組的同型別陣列，並將其內容交換，也就是說，它會把 [`a`, `b`] 變成 [`b`, `a`]。但它也有可能收 `[1, 2]`，這樣的話它會返回 `[2, 1]`。你可能會想寫成：
+
+```ts
+function swap(arr: [any, any]): [any, any] {
+  return [arr[1], arr[0]]
+}
+```
+
+這會有什麼問題？你會發現這個函式不符合我們的需求，因為它可以收不同型別的陣列：
+
+```ts
+swap([1, 'hello'])
+// 這不會報錯，但我們希望這要報錯！
+```
+
+這樣我們該怎麼寫呢？這時候我們就該使用泛型，語法如下。在這樣的情況下，`TypeScript` 會根據呼叫的時候傳入的參數的型別來判斷 `T` 是什麼：
+
+```ts
+function swap<T>(arr: [T, T]): [T, T] {
+  return [arr[1], arr[0]]
+}
+swap([1, 2])
+// 者時候 T 被判斷成 'number'。
+swap(['hello', 'world'])
+// 這時候 T 被判斷成 'string'。
+swap([1, 'hello'])
+// Type 'string' is not assignable to type 'number'.
+// 成功報錯了。
+```
+
+箭頭函式也可以使用泛型：
+
+```ts
+const swap = <T>(arr: [T, T]): [T, T] => [arr[1], arr[0]]
+```
+
+這個 `T` 的命名是常見慣例，但並不是強硬的，你可以使用任何的非保留字作為泛型的字元。
+
+泛型變數的個數也可以有一個以上：
+
+```ts
+function merge<T, U>(obj1: T, obj2: U) {
+  return { ...obj1, ...obj2 }
+}
+// 在這個例子中，我刻意省略了 return 的型別宣告，但你也可以明示它：T & U。
+```
+
+泛型一樣可以使用獨立宣告的型別：
+
+```ts
+type GenericFunction<T> = (x: T, y: T) => T
+
+const genericAdd: GenericFunction<number | string> = (x, y) => {
+  if (typeof x === 'number' && typeof y === 'number') {
+    return x + y
+  } else if (typeof x === 'string' && typeof y === 'string') {
+    return x + y
+  }
+  throw new Error('Invalid types')
+}
+```
