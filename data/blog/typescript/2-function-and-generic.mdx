@@ -190,9 +190,8 @@ type GenericFunction<T> = (x: T, y: T) => T
 const genericAdd: GenericFunction<number | string> = (x, y) => {
   if (typeof x === 'number' && typeof y === 'number') {
     return x + y
-  } else if (typeof x === 'string' && typeof y === 'string') {
+  } else {
     return x + y
   }
-  throw new Error('Invalid types')
 }
 ```
