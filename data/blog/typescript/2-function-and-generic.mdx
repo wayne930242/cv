@@ -127,9 +127,78 @@ function processDataUnknown(data: unknown) {
 }
 ```
 
-# 簡單的泛型
+# 函式參數數量限制
 
-泛型是 `TypeScript` 中的強大功能，需要靈活應用型別，就必須要學習泛型的使用。
+在 `TypeScript` 中，對函式的參數數量有嚴格限制，而這個限制是 `JavaScript` 所沒有的。
+
+在 `JavaScript` 中，下列的函式宣告與呼叫是完全合法的。數量不足的參數會被當成 `undefined`，數量超過的參數則會直接被忽略：
+
+```js
+function greet(name, age) {
+  console.log(`Hello, ${name}! You are ${age} years old.`)
+}
+
+greet('Alice', 30)
+// "Hello, Alice! You are 30 years old."
+greet('Bob')
+// "Hello, Bob! You are undefined years old."
+greet('Charlie', 25, 'extra')
+// "Hello, Charlie! You are 25 years old."
+```
+
+但在 `TypeScript` 中則非如此：
+
+```ts
+function greet(name: string, age: number) {
+  console.log(`Hello, ${name}! You are ${age} years old.`)
+}
+
+greet('Alice', 30)
+// 這是正確的呼叫。
+greet('Bob')
+// 錯誤: Expected 2 arguments, but got 1.
+greet('Charlie', 25, 'extra')
+// 錯誤: Expected 2 arguments, but got 3.
+```
+
+如果你希望參數是可選的，必須加上 `?` 或是指定預設值：
+
+```ts
+function greet(name: string, age?: number) {
+  console.log(`Hello, ${name}! You are ${age ?? 'unknown'} years old.`)
+  // 這個 `??` 是 ES11 中擴增的語法，
+  // age ?? 'unknown' 在 age 是 null 或 undefined 的時候為 age，否則為 'unknown'
+}
+
+greet('Alice', 30)
+// "Hello, Alice! You are 30 years old."
+greet('Bob')
+// "Hello, Bob! You are unknown years old."
+
+function greet(name: string, age: number = 18) {
+  // 此處的 age 不能加上 ?，但它會被視為可選的
+  console.log(`Hello, ${name}! You are ${age} years old.`)
+}
+
+greet('Bob')
+// "Hello, Bob! You are 18 years old."
+```
+
+如果想讓函數接受不定數量的參數，可以使用剩餘參數（rest parameter）：
+
+```ts
+function sum(...numbers: number[]): number {
+  return numbers.reduce((total, num) => total + num, 0)
+}
+
+sum(1, 2)
+sum(1, 2, 3, 4, 5)
+sum()
+```
+
+# 泛型基礎
+
+泛型（generic type）是 `TypeScript` 中的強大功能，需要靈活應用型別，就必須要學習泛型的使用。
 
 假設我們的需求是這樣，我想定義一個名為 `swap` 的函式，它收一個 2 元組的同型別陣列，並將其內容交換，也就是說，它會把 [`a`, `b`] 變成 [`b`, `a`]。但它也有可能收 `[1, 2]`，這樣的話它會返回 `[2, 1]`。你可能會想寫成：
 
