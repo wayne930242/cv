@@ -196,7 +196,7 @@ sum(1, 2, 3, 4, 5)
 sum()
 ```
 
-# 泛型基礎
+# 函數與泛型
 
 泛型（generic type）是 `TypeScript` 中的強大功能，需要靈活應用型別，就必須要學習泛型的使用。
 
@@ -263,4 +263,50 @@ const genericAdd: GenericFunction<number | string> = (x, y) => {
     return x + y
   }
 }
+```
+
+如果使用非同步函式，可以這樣寫：
+
+```ts
+async function fetchData<T>(url: string): Promise<T> {
+  return fetch(url).then((response) => response.json())
+}
+
+interface User {
+  id: number
+  name: string
+}
+
+fetchData<User>('/api/user').then((user) => {
+  console.log(user.name)
+})
+```
+
+# 在其他型別使用泛型
+
+以下是一些在非函數型別上使用泛型的簡單例子：
+
+```ts
+interface Box<T> {
+  content: T
+}
+
+const numberBox: Box<number> = { content: 42 }
+const stringBox: Box<string> = { content: 'Hello' }
+```
+
+```ts
+type DataArray<T> = T[]
+
+const dataArray: DataArray<number> = [1, 2, 3]
+
+interface User {
+  id: number
+  name: string
+}
+
+const userArray: DataArray<User> = [
+  { id: 1, name: 'Alice' },
+  { id: 2, name: 'Bob' },
+]
 ```
