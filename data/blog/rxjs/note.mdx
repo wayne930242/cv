@@ -116,7 +116,7 @@ RxJS 擁有豐富的 Operator，可以簡化我們對 Observable 的控制，並
 
 以下是一些範例：
 
-** 建立 Operator **
+**建立 Operator**
 
 ```ts
 import { from, fromEvent } from 'rxjs'
@@ -133,7 +133,7 @@ promiseObservable.subscribe(
 )
 ```
 
-** 轉換 Operator **
+**轉換 Operator**
 
 ```ts
 import { fromEvent } from 'rxjs'
@@ -148,7 +148,7 @@ const positions = clicks.pipe(
 positions.subscribe((pos) => console.log('Clicked at:', pos))
 ```
 
-** 過濾 Operator **
+**過濾 Operator**
 
 ```ts
 import { fromEvent } from 'rxjs'
@@ -164,7 +164,7 @@ const typeahead = fromEvent(input, 'input').pipe(
 typeahead.subscribe((value) => console.log('Search for:', value))
 ```
 
-** 組合 Operator **
+**組合 Operator**
 
 ```ts
 import { combineLatest, fromEvent } from 'rxjs'
@@ -185,7 +185,7 @@ const bmi = combineLatest([weight, height]).pipe(
 bmi.subscribe((value) => console.log('BMI:', value))
 ```
 
-** 錯誤處理 Operator **
+**錯誤處理 Operator**
 
 ```ts
 import { from } from 'rxjs'
@@ -213,7 +213,7 @@ apiCall('123').subscribe(
 )
 ```
 
-** 實用工具 Operator **
+**實用工具 Operator**
 
 ```ts
 import { fromEvent } from 'rxjs'
