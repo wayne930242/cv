@@ -299,7 +299,7 @@ Subject 是 Observable 的擴充型別，可以使用 Observable 的所有方法
 Subject 同時是 Observer 的擴充型別。這有兩個意義：
 
 1. Subject 有 `next(v)` `error(e)` 和 `complete()` 等方法可以進行呼叫。一旦呼叫，會多播到所有已經註冊的 Observer。
-2. 當在 Subject 上註冊了一個清單的 Observer，Observable 能夠訂閱它。
+2. 當在 Subject 上註冊了一個清單的 Observer，Observable 能透過訂閱 Subject 來訂閱它們，因此實現了多播。
 
 以下是一個基本的範例，顯示了如何使用 Subject 來進行多播的情境：
 
