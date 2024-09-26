@@ -57,7 +57,7 @@ const observer: Observer<number> = {
 observable.subscribe(observer)
 ```
 
-如果只想處理回傳值，Observable 可以透過一個回呼函數訂閱。此時，訂閱者所散播的錯誤和完成的訊息會直接被忽略：
+如果只想處理回傳值，Observable 可以透過一個回呼函數訂閱。此時，訂閱者所發出的錯誤和完成的訊息會直接被忽略：
 
 ```ts
 observable.subscribe((x) => {
@@ -423,8 +423,8 @@ asyncSubject.complete()
 ## 建立 Operator
 
 1. `ajax`: 發送 HTTP 請求並返回響應的 Observable。參數：URL 字符串或請求配置對象。
-2. `bindCallback`: 將回調 API 轉換為返回 Observable 的函數。參數：要轉換的回調函數。
-3. `bindNodeCallback`: 將 Node.js 風格的回調 API 轉換為返回 Observable 的函數。參數：要轉換的 Node.js 風格的回調函數。
+2. `bindCallback`: 將回呼 API 轉換為返回 Observable 的函數。參數：要轉換的回呼函數。
+3. `bindNodeCallback`: 將 Node.js 風格的回呼 API 轉換為返回 Observable 的函數。參數：要轉換的 Node.js 風格的回呼函數。
 4. `defer`: 創建一個 Observable，只有在被訂閱時才執行指定的 Observable 工廠函數。參數：返回 Observable 或 Promise 的工廠函數。
 5. `from`: 將陣列、類陣列對象、Promise 或可迭代對象轉換為 Observable。參數：要轉換的輸入值。
 6. `fromEvent`: 將事件轉換為 Observable。參數：事件目標和事件名稱。
