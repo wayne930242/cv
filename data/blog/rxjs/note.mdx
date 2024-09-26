@@ -530,8 +530,8 @@ asyncSubject.complete()
 3. `delayWhen`: 延遲來源 Observable 發出的值，延遲時間由另一個 Observable 決定。
 4. `dematerialize`: 將一個發出通知對象的 Observable 轉換為這些通知所代表的值的 Observable。
 5. `materialize`: 將來源 Observable 轉換為其通知的 Observable。
-6. `observeOn`: 指定 Observable 在哪個調度器上發出通知。
-7. `subscribeOn`: 指定 Observable 在哪個調度器上進行訂閱。
+6. `observeOn`: 指定 Observable 在哪個排程器上發出通知。
+7. `subscribeOn`: 指定 Observable 在哪個排程器上進行訂閱。
 8. `timeInterval`: 將來源 Observable 轉換為發出兩次連續發射之間的經過時間的 Observable。
 9. `timestamp`: 將每個發出的值附加一個時間戳。
 10. `timeout`: 如果在指定的時間週期內沒有值發出，則拋出錯誤。
