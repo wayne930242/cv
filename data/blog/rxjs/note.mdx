@@ -6,12 +6,10 @@ draft: false
 summary: 這是我學習 RxJS 的筆記。整理成易懂的筆記，希望能提供初學者清晰的概念。
 ---
 
-以下是將代碼塊格式進行處理後的文章內容：
-
 RxJS 適合用來處理複雜的異步操作和事件流，主要是因為以下的編程特色：
 
-1. 響應式編程（Reactive Programming）：響應式編程透過定義數據流和自動處理的依賴關係，讓系統能夠即時回應數據或狀態的變化。
-2. 函數式編程（Functional Programming）：函數式編程以不可變數據和純函數為核心，強調函數作為一等公民並避免副作用。
+1. 響應式編程（Reactive Programming）：響應式編程透過定義資料流和自動處理的依賴關係，讓系統能夠即時回應資料或狀態的變化。
+2. 函數式編程（Functional Programming）：函數式編程以不可變資料和純函數為核心，強調函數作為一等公民並避免副作用。
 
 本文使用 `TypeScript` 作為示例，如果你不想使用它，可以直接忽略所有的型別宣告。
 
@@ -118,7 +116,7 @@ RxJS 擁有豐富的 Operator，可以簡化我們對 Observable 的控制，並
 
 以下是一些範例：
 
-** 建立 Operator **
+**建立 Operator**
 
 ```ts
 import { from, fromEvent } from 'rxjs'
@@ -135,7 +133,7 @@ promiseObservable.subscribe(
 )
 ```
 
-** 轉換 Operator **
+**轉換 Operator**
 
 ```ts
 import { fromEvent } from 'rxjs'
@@ -150,7 +148,7 @@ const positions = clicks.pipe(
 positions.subscribe((pos) => console.log('Clicked at:', pos))
 ```
 
-** 過濾 Operator **
+**過濾 Operator**
 
 ```ts
 import { fromEvent } from 'rxjs'
@@ -166,7 +164,7 @@ const typeahead = fromEvent(input, 'input').pipe(
 typeahead.subscribe((value) => console.log('Search for:', value))
 ```
 
-** 組合 Operator **
+**組合 Operator**
 
 ```ts
 import { combineLatest, fromEvent } from 'rxjs'
@@ -187,7 +185,7 @@ const bmi = combineLatest([weight, height]).pipe(
 bmi.subscribe((value) => console.log('BMI:', value))
 ```
 
-** 錯誤處理 Operator **
+**錯誤處理 Operator**
 
 ```ts
 import { from } from 'rxjs'
@@ -215,7 +213,7 @@ apiCall('123').subscribe(
 )
 ```
 
-** 實用工具 Operator **
+**實用工具 Operator**
 
 ```ts
 import { fromEvent } from 'rxjs'
